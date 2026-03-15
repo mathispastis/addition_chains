@@ -26,29 +26,6 @@ def unary_string(n, character='a'):
     return character * n
 
 
-def run_unary_experiment():
-    """
-    Runs the Greedy algorithm on unary strings from length 1 to 100
-    and prints the resulting grammar sizes.
-    """
-    print("Length (n) | Compressed Grammar Size")
-    print("-----------------------------------")
-
-    for n in range(1, 101):
-        # 1. Generate the string
-        string = unary_string(n)
-
-        # 2. Compress it
-        final_grammar = greedy(string)
-
-        # 3. Calculate the size
-        size = grammar_size(final_grammar)
-
-        # 4. Print the results (formatting to keep the columns aligned)
-        print(f"{n:<10} | {size}")
-
-
-
 import math
 
 
@@ -64,7 +41,6 @@ def run_asymptotic_ratio_experiment(max_n=100):
     print(f"Starting experiment for n=2 to {max_n}...")
     print("--------------------------------------------------")
 
-    # We start at 2 to avoid division by zero (since log_3(1) = 0)
     for n in range(2, max_n + 1):
         string = unary_string(n)
         final_grammar = greedy(string)
@@ -86,7 +62,7 @@ def run_asymptotic_ratio_experiment(max_n=100):
 
     return max_ratio, n_at_max_ratio
 
-# To run it:
+
 def run_optimal_greedy(input_sequence):
     """
     Initializes the branching search and returns the absolute smallest grammar
@@ -97,7 +73,6 @@ def run_optimal_greedy(input_sequence):
     else:
         initial_grammar = {'A0': list(input_sequence)}
 
-    # Run the recursive search
     all_possible_grammars = greedy_branching(initial_grammar, rule_counter=1)
 
     # Find the grammar with the minimum size
@@ -120,20 +95,14 @@ def run_optimal_asymptotic_experiment(max_n=30):
     print("--------------------------------------------------")
 
     for n in range(800, max_n + 1):
-        # 1. Generate the string
         string = unary_string(n)
 
-        # 2. Compress it using the BRANCHING algorithm
-        # Note: Depending on where you put it, make sure run_optimal_greedy is imported!
         final_grammar = run_optimal_greedy(string)
 
-        # 3. Calculate the size
         size = grammar_size(final_grammar)
 
-        # 4. Calculate the theoretical ratio
         ratio = size / (3 * math.log(n, 3))
 
-        # 5. Track the maximum ratio
         if ratio > max_ratio:
             max_ratio = ratio
             n_at_max_ratio = n
